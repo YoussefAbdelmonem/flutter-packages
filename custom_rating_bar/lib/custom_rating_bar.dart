@@ -9,8 +9,8 @@ class RatingBar extends StatefulWidget {
   /// Default constructor for [RatingBar].
   const RatingBar({
     super.key,
-    required this.filledIcon,
-    required this.emptyIcon,
+    required this.fillWidget,
+    required this.emptyWidget,
     required this.onRatingChanged,
     this.initialRating = 0.0,
     this.maxRating = 5,
@@ -54,10 +54,14 @@ class RatingBar extends StatefulWidget {
         super(key: key);
 
   /// Icon used for filled part of the rating bar.
-  final IconData filledIcon;
+  final IconData ?filledIcon;
+
+  final Widget? fillWidget;
+    final Widget ?emptyWidget;
+
 
   /// Icon used for empty part of the rating bar.
-  final IconData emptyIcon;
+  final IconData ?emptyIcon;
 
   /// Max rating value.
   final int maxRating;
@@ -158,7 +162,7 @@ class _RatingBarState extends State<RatingBar> {
   Widget _buildIconView(int position) {
     final halfFilledIcon = widget.halfFilledIcon;
 
-    IconData iconData;
+    Widget iconData;
     Color color;
     double rating;
 
@@ -174,15 +178,15 @@ class _RatingBarState extends State<RatingBar> {
       rating = currentRating;
     }
     if (position > rating + 0.5) {
-      iconData = widget.emptyIcon;
+      iconData = widget.emptyWidget;
       color = widget.emptyColor;
     } else if (position == rating + 0.5 && halfFilledIcon != null) {
       iconData = halfFilledIcon;
       color = widget.halfFilledColor;
     } else {
-      iconData = widget.filledIcon;
+      iconData = widget.fillWidget;
       color = widget.filledColor;
     }
-    return Icon(iconData, color: color, size: widget.size);
+    return Container(child:iconData,width:widget.size,color:color);
   }
 }
